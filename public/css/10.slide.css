@@ -1,7 +1,7 @@
 .wrapper {max-width: 1200px; margin: 50px auto;}
 html, body{height: 10000px;}
 .btn-prev, .btn-next {cursor: pointer; user-select: none;}
-
+/* slide 1 */
 .wrapper1 .stage {width: 100%; border: 10px solid red; overflow: hidden;}
 .wrapper1 .slide-wrap {position: relative;}
 .wrapper1 .slide {position: absolute; top: 0; width: 100%;}
@@ -10,7 +10,7 @@ html, body{height: 10000px;}
 .wrapper1 .slide:nth-child(3) {left: 200%;}
 .wrapper1 .slide:nth-child(4) {left: 300%;}
 .wrapper1 .slide:nth-child(5) {left: 400%;}
-
+/* slide 2 */
 .wrapper2 .stage {width: 100%; border: 10px solid red; overflow: hidden;}
 .wrapper2 .slide-wrap {position: relative;}
 .wrapper2 .slide {position: absolute; top: 0; width: 100%;}
@@ -19,7 +19,7 @@ html, body{height: 10000px;}
 .wrapper2 .slide:nth-child(3) {left: 200%;}
 .wrapper2 .slide:nth-child(4) {left: 300%;}
 .wrapper2 .slide:nth-child(5) {left: 400%;}
-
+/* slide 3 */
 .wrapper3 .stage {width: 100%; border: 10px solid red; overflow: hidden;}
 .wrapper3 .slide-wrap {position: relative;}
 .wrapper3 .slide {position: absolute; top: 0; width: 100%;}
@@ -28,3 +28,34 @@ html, body{height: 10000px;}
 .wrapper3 .slide:nth-child(3) {left: 200%;}
 .wrapper3 .slide:nth-child(4) {left: 300%;}
 .wrapper3 .slide:nth-child(5) {left: 400%;}
+/* slide 4 */
+.wrapper4 .stage {width: 100%; border: 10px solid red; overflow: hidden; position: relative;}
+.wrapper4 .slide-wrap {position: relative;}
+.wrapper4 .slide {position: absolute; top: 0; width: 100%;}
+.wrapper4 .slide:nth-child(1) {position: relative; left: 0;}
+.wrapper4 .slide:nth-child(2) {left: 100%;}
+.wrapper4 .slide:nth-child(3) {left: 200%;}
+.wrapper4 .slide:nth-child(4) {left: 300%;}
+.wrapper4 .slide:nth-child(5) {left: 400%;}
+.wrapper4 .btn-prev, .wrapper4 .btn-next{font-size: 15vw; color:#f8f8f8;
+text-shadow: 0 0 2vw rgba(0,0,0,0.5); position: absolute; 
+ z-index:9999; top: calc(50% - 11vw); opacity: .2;
+transition:opacity .5s; }
+ .wrapper4 .btn-next{right: 0;}
+ .wrapper4 .btn-prev{}
+ .wrapper4 .btn-prev:hover, .wrapper4 .btn-next:hover{opacity: 0.7;}
+
+
+ /* slide 5 */
+.wrapper.wrapper5 {max-width: 600px;}
+.wrapper5 .stage {width: 100%; border: 10px solid red; position: relative; overflow: hidden;}
+.wrapper5 .slide-wrap {position: relative;}
+.wrapper5 .slide {position: absolute; top: 0; width: 100%;}
+.wrapper5 .slide > h1 {position: absolute; width: 100%; height: 100%; top: 0; left: 0; font-size: 10vw; display: flex; justify-content: center; align-items: center; color: #fff;}
+.wrapper5 .slide:nth-child(1) {position: absolute; left: -100%;}
+.wrapper5 .slide:nth-child(2) {position: relative;}
+.wrapper5 .slide:nth-child(3) {position: absolute; left: 100%;}
+.wrapper5 .btn-prev, .wrapper5 .btn-next {font-size: 10vw; color: #fff; text-shadow: 0 0 2vw rgba(0,0,0,0.5); position: absolute; z-index: 9; top: calc(50% - 8vw); opacity: .1; transition: opacity 1s;}
+.wrapper5 .btn-prev {}
+.wrapper5 .btn-next {right: 0;}
+.wrapper5 .btn-prev:hover, .wrapper5 .btn-next:hover {opacity: .7;}
