@@ -135,20 +135,28 @@
 	var $slideWrap = $(".wrapper5 .slide-wrap");
 	var $btnPrev = $(".wrapper5 .btn-prev");
 	var $btnNext = $(".wrapper5 .btn-next");
-	var $slides = [];
-	var idx = 4;
-	var target;
-	var lastIdx = slides.length - 1;
-	var interval;
+	var $pagerWrap = $(".wrapper5 .pager-wrap");
+	var $pager;       //생성된 $(".wrapper5 .pager")
+	var $slide;       //화면에 보여지는 $(".slide") : 항상 3개만 존재
+	var $slides = []; //$(".slide")들 모두를 담아놓는 배열(필요할때 복사해서 가져다 쓴다.)
+	var idx = 4;      //현재 화면에 보이는 slide의 index
+	var target;       //움직일 목표값(-100%, 100%)
+	var lastIdx = slides.length - 1;//$(".slide")들 중에 마지막index
+	var interval;     //setInterval을 담아놓는 변수
 
 	function init() {
-		for(var i in slides) {
+		var html, i;
+		for(i in slides) {
 			html = '<div class="slide">';
 			html += '<img class="w-100" src="'+slides[i].src+'">';
 			html += '<h1>'+i+'</h1>';
 			html += '</div>';
 			$slides[i] = $(html);
-		}
+			html='<span class="pager">●</span>';
+		$pagerWrap.append(html);
+	}
+	$pager = $pagerWrap.find(".pager");
+	$pager.click(onPagerClick).eq(idx).addClass("active")
 		slideInit();
 	}
 
@@ -162,6 +170,7 @@
 		//우측(next)
 		if(idx == lastIdx) $slideWrap.append($slides[0].clone());
 		else $slideWrap.append($slides[idx + 1].clone());
+		$slide = $slideWrap.find(".slide");
 	}
 	$btnPrev.click(onPrev);
 	$btnNext.click(onNext);
@@ -179,7 +188,29 @@
 		idx = (idx == lastIdx) ? 0:idx+1;
 		ani();
 	}
+
+	function onPagerClick(){
+	//클릭된 pager에 따라 idx,slide를 바꾼다.
+	var oldIdx = idx;
+	idx = $(this).index();
+	if(oldIdx < idx){
+		//next
+		$slide.eq(2).remove();
+		$slideWrap.append($slides[idx].clone());
+		target = '-100%';
+		ani();
+	}
+	if(oldIdx > idx){
+		//prev
+		$slide.eq(0).remove();
+		$slideWrap.prepend($slides[idx].clone());
+		target = '100%';
+		ani();
+	}
+	}
+
 			function ani() {
+				$pager.removeClass("active").eq(idx).addClass("active");
 				$slideWrap.stop().animate({"left": target}, 500, slideInit);
 			}
 	/*
