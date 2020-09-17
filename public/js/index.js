@@ -97,6 +97,26 @@ function onBannerInterval() {
 	headerBanner();
 }
 
+function onPageEnter(){
+	$(this).find(".sub-wrap").stop().slideDown(500, slideCb);
+	setTimeout(slideCb, 250, this);
+	
+	function slideCb(my){
+		$(my).find("ul").each(function(){
+		$(this).find("li").each(function(i){
+     $(this).css("transition-delay", i*0.05+"s").addClass("active");
+		});
+	});
+};
+}
+function onPageLeave(){
+	$(this).find(".sub-wrap").stop().slideUp(500, slideCb);
+	function slideCb(){
+		$(this).find("li").removeClass("active");
+	}
+}
+
+
 function onPrdOver() {
 	prdIdx = $(this).index();
 	prdLastIdx = $(this).find(".list").length - 1;
@@ -139,6 +159,10 @@ $(window).scroll(onScroll);
 $(window).resize(onResize).trigger("resize");
 $(".header-wrapper").find(".list").hover(onListOver, onListLeave);
 bannerInterval = setInterval(onBannerInterval, 8000); 
+
+$(".header-wrapper .navi-page").find(".sub-wrap").slideUp(0);
+$(".header-wrapper .navi-page").mouseenter(onPageEnter);
+$(".header-wrapper .navi-page").mouseleave(onPageLeave);
 
 $(".prd-stage").hover(onPrdOver, onPrdLeave);
 $(".prd-stage .pager").click(onPagerClick);

@@ -104,8 +104,8 @@ transition:opacity .5s; }
 
 .wrapper8 .slide > h1 {position: absolute; width: 100%; height: 100%; top: 0; left: 0; font-size: 10vw; display: flex; justify-content: center; align-items: center; color: #fff;}
 
-/* .wrapper8 .slide .title {position: absolute; bottom: 4vw; left: 4vw; color: #fff; font-size: 4vw; transition: 
-
+ /* .wrapper8 .slide .title {position: absolute; bottom: 4vw; left: 4vw; color: #fff; font-size: 4vw; transition: 
+ */
 @media screen and (max-width: 991px){
 	.wrapper8 .slide-wrap {width:166.6666%; left: -33.3333%; }
 .wrapper8 .slide {flex: 20% 0 0; }
