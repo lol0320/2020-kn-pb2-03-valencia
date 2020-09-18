@@ -435,6 +435,7 @@
 		slideInit();
 		interval = setInterval(onNext, 3000);
 	}
+	
 function slideInit(){
 	/* $btnPrev.show();
 	$btnNext.show(); */
@@ -447,10 +448,10 @@ for(var i=1; i<=4; i++){
 if(idx + i > lastIdx ) $($slides[idx + i - 1 - lastIdx].clone()).appendTo($slideWrap);
 else $($slides[idx + i].clone()).appendTo($slideWrap);
 }
-
 }
-	function ani(){
-		$slideWrap.stop().animate({"left": target+"%"}, 500, slideInit);
+	
+function ani(){
+	$slideWrap.stop().animate({"left": target+"%"}, 500, slideInit);
 	}
 	/*********** 이벤트 콜백 ***********/
 	function onPrev(){

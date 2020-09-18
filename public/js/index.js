@@ -57,27 +57,27 @@ function onScroll() {
 
 	if(winWid > 991) {
 		if(section[1] > sct) {
-			$(".brand-wrapper .title-wrapper").css("top", "16px");
-			$(".brand-wrapper .title-wrap").css({"top": "calc(50vh - 158px)", "bottom": "auto", "width": "100%", "position": "absolute"});
+			$(".type-1 .title-wrapper").css("top", "16px");
+			$(".type-1 .title-wrap").css({"top": "calc(50vh - 158px)", "bottom": "auto", "width": "100%", "position": "absolute"});
 		}
 		else if(section[1] <= sct && section[1] + $("section").eq(1).outerHeight() - $(window).outerHeight() > sct) {
-			$(".brand-wrapper .title-wrap").css({"position": "fixed", "width": brandTitleWidth + "px"});
+			$(".type-1 .title-wrap").css({"position": "fixed", "width": brandTitleWidth + "px"});
 		}
 		else {
-			$(".brand-wrapper .title-wrapper").css("top", "-16px");
-			$(".brand-wrapper .title-wrap").css({"top": "auto", "bottom": "calc(50vh - 158px)", "width": "100%", "position": "absolute"});
+			$(".type-1 .title-wrapper").css("top", "-16px");
+			$(".type-1 .title-wrap").css({"top": "auto", "bottom": "calc(50vh - 158px)", "width": "100%", "position": "absolute"});
 		}
 	}
 	else {
-		$(".brand-wrapper .title-wrap").css({"position": "static"});
-		$(".brand-wrapper .title-wrap").css({"width": "100%"});
+		$(".type-1 .title-wrap").css({"position": "static"});
+		$(".type-1 .title-wrap").css({"width": "100%"});
 	}
 }
 
 function onResize() {
 	winWid = $(this).outerWidth();
 	winHei = $(this).outerHeight();
-	brandTitleWidth = $(".brand-wrapper .title-wrapper").width();
+	brandTitleWidth = $(".type-1 .title-wrapper").width();
 	$(this).trigger("scroll");
 }
 
@@ -109,6 +109,9 @@ function onPageEnter(){
 	});
 };
 }
+
+
+
 function onPageLeave(){
 	$(this).find(".sub-wrap").stop().slideUp(500, slideCb);
 	function slideCb(){
@@ -155,6 +158,8 @@ function onModalHide() {
 }
 
 /********************** 이벤트등록 *************************/
+
+
 $(window).scroll(onScroll);
 $(window).resize(onResize).trigger("resize");
 $(".header-wrapper").find(".list").hover(onListOver, onListLeave);
@@ -164,11 +169,76 @@ $(".header-wrapper .navi-page").find(".sub-wrap").slideUp(0);
 $(".header-wrapper .navi-page").mouseenter(onPageEnter);
 $(".header-wrapper .navi-page").mouseleave(onPageLeave);
 
+
+
 $(".prd-stage").hover(onPrdOver, onPrdLeave);
 $(".prd-stage .pager").click(onPagerClick);
 
-$(".brand-wrapper .btn-wish").click(onWishModalShow);
+$(".type-1 .btn-wish").click(onWishModalShow);
 $(".modal-wrapper .btn-close, .modal-wrapper").click(onModalHide);
 $(".modal-wrap").click(function(e) { e.stopPropagation() });
 
- 
+/**************슬라이드 **********************/   
+(function (){
+var $wrapper = $(".type-slide .slide-wrapper");
+var $stage = $(".type-slide .stage");
+var $slides =$(".type-slide .slide");
+var $titlLt =$(".type-slide .title-lt");
+var $titles =$(".type-slide .title-lt .title-wrap");
+var $pagerWrap =$(".type-slide .pager-wrap");
+var bg = ['../img/slide-0.jpg','../img/slide-1.jpg','../img/slide-2.jpg','../img/slide-3.jpg'];
+var idx = 0;
+var lastIdx =$slides.length -1;
+var interval;
+init();
+
+function init(){
+/* $wrapper.empty();
+$(".type-slide .title-lt .title-wrap").remove(); */
+for(var i=0; i<$slides.length; i++){
+	$pagerWrap.append('<div class="pager">·</div>');
+	
+	
+}
+
+$pagerWrap.find(".pager").eq(idx).addClass("active")
+$pagerWrap.find(".pager").click(onClick);
+interval = setInterval(onInterval, 3000);
+$stage.mouseenter(onEnter).mouseleave(onLeave);
+slideInit();
+}
+
+function slideInit(){
+	$wrapper.empty();
+$(".type-slide .title-lt .title-wrap").remove();
+	$($($slides[idx]).clone()).appendTo($wrapper).css("background-image","url("+bg[idx]+")");
+	$($($titles[idx]).clone()).prependTo($titlLt);
+	$(".type-slide .title-lt .title-wrap").css("opacity");
+	$(".type-slide .title-lt .title-wrap").css("transform");
+	$(".type-slide .title-lt .title-wrap").css({"opacity":1,"transform":"translateX(0)"});
+	
+}
+function onEnter(){
+clearInterval(interval);
+}
+function onLeave(){
+interval = setInterval(onInterval, 3000);
+}
+
+function onClick(){
+	idx = $(this).index();
+	ani();
+}
+
+function onInterval(){
+	idx = (idx == lastIdx)?0:idx+1;
+	ani();
+}
+
+function ani(){
+	$pagerWrap.find(".pager").removeClass("active");
+	$pagerWrap.find(".pager").eq(idx).addClass("active");
+	$(".type-slide .title-lt .title-wrap").stop().animate({"opacity":0},500);
+	var $nowSlide = $($($slides[idx]).clone()).appendTo($wrapper).css("background-image","url("+bg[idx]+")").stop().animate({"opacity":1},500, slideInit);
+}
+ })();
