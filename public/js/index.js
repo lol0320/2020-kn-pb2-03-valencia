@@ -17,9 +17,14 @@ var bannerInterval;
 var winWid;
 var winHei;
 
-var prdIdx;					// 상품의 idx - 상품에 hover할때만 변한다.
 var prdLastIdx;			// 상품의 이미지의 마지막 idx값(length-1) - 상품에 hover할때만 변한다.
-var prdListIdx;			// 상품에서 이미지의 idx - Interval, pagerclick, 상품에 hover(1), leave(0)
+var prdWrapIdx;     //상품 그룹의 Idx (type-1: 0, type-2: 1)
+
+var $list;  //현재 선택된 리스트
+var $pager; //현재 선택된 페이저
+
+/* var prdIdx;					// 상품의 idx - 상품에 hover할때만 변한다.
+var prdListIdx;	 */		// 상품에서 이미지의 idx - Interval, pagerclick, 상품에 hover(1), leave(0)
 var prdInterval;		// 상품의 Animation 간격
 
 var brandTitleWidth;
@@ -33,13 +38,12 @@ function headerBanner() {
 }
 
 function prdAni() {
-	$(".prd-stage").eq(prdIdx).find(".pager").removeClass("active");
-	$(".prd-stage").eq(prdIdx).find(".pager").eq(prdListIdx).addClass("active");
-	
-	$(".prd-stage").eq(prdIdx).find(".list").css({"position": "absolute"}).stop().animate({"opacity": 0}, 500, function(){
-		$(this).css({"display": "none"});
+
+$pager.addClass("active").siblings().removeClass("active");
+$list.css({"position": "relative", "display": "block"}).stop().animate({"opacity": 1}, 500).siblings()
+.css({"position": "absolute"}).stop().animate({"opacity":0},500,function(){
+$(this).css({"display":"none"});
 	});
-	$(".prd-stage").eq(prdIdx).find(".list").eq(prdListIdx).css({"position": "relative", "display": "block"}).stop().animate({"opacity": 1}, 500);
 }
 
 /********************** 이벤트콜백 *************************/
@@ -67,10 +71,22 @@ function onScroll() {
 			$(".type-1 .title-wrapper").css("top", "-16px");
 			$(".type-1 .title-wrap").css({"top": "auto", "bottom": "calc(50vh - 158px)", "width": "100%", "position": "absolute"});
 		}
+
+		if(section[3] > sct) {
+			$(".type-2 .title-wrapper").css("top", "16px");
+			$(".type-2 .title-wrap").css({"top": "calc(50vh - 158px)", "bottom": "auto", "width": "100%", "position": "absolute"});
+		}
+		else if(section[3] <= sct && section[3] + $("section").eq(3).outerHeight() - $(window).outerHeight() > sct) {
+			$(".type-2 .title-wrap").css({"position": "fixed", "width": brandTitleWidth + "px"});
+		}
+		else {
+			$(".type-2 .title-wrapper").css("top", "-16px");
+			$(".type-2 .title-wrap").css({"top": "auto", "bottom": "calc(50vh - 158px)", "width": "100%", "position": "absolute"});
+		}
 	}
 	else {
-		$(".type-1 .title-wrap").css({"position": "static"});
-		$(".type-1 .title-wrap").css({"width": "100%"});
+		$(".brand-wrapper .title-wrap").css({"position": "static"});
+		$(".brand-wrapper .title-wrap").css({"width": "100%"});
 	}
 }
 
@@ -98,17 +114,22 @@ function onBannerInterval() {
 }
 
 function onPageEnter(){
-	$(this).find(".sub-wrap").stop().slideDown(500, slideCb);
-	setTimeout(slideCb, 250, this);
+	$(this).find(".sub-wrap").stop().slideDown(500);
+$(this).find(".sub-wrap").find("ul").each(function(){
+$(this).find("li").each(function(i){
+$(this).css("transition-delay", (0.25+0.05*i)+"s").addClass("active")
+});
+	});
+/* 	setTimeout(slideCb, 250, this);
 	
 	function slideCb(my){
 		$(my).find("ul").each(function(){
 		$(this).find("li").each(function(i){
      $(this).css("transition-delay", i*0.05+"s").addClass("active");
 		});
-	});
-};
+	}); */
 }
+
 
 
 
@@ -121,29 +142,36 @@ function onPageLeave(){
 
 
 function onPrdOver() {
-	prdIdx = $(this).index();
-	prdLastIdx = $(this).find(".list").length - 1;
-	prdListIdx = 1;
-	prdInterval = setInterval(onPrdInterval, 4000);
-	prdAni();
+
+	
+$list = $(this).find(".list").eq(1);
+$pager = $(this).find(".pager").eq(1);
+prdAni();
+prdInterval = setInterval(onPrdInterval,4000);
+	//prdInterval = setInterval(onPrdInterval, 4000);
+//	prdAni($(this), "prd-stage");
 }
 
 function onPrdLeave() {
-	prdListIdx = 0;
-	clearInterval(prdInterval);
+	$list = $(this).find(".list").eq(0);
+	$pager = $(this).find(".pager").eq(0);
 	prdAni();
+	//clearInterval(prdInterval);
+//	prdAni($(this), "prd-stage");
 }
 
 function onPagerClick() {
-	prdListIdx = $(this).index();
+	var idx = $(this).index();
+	$list = $(this).parent().prev().find(".list").eq(idx);
+	$pager = $(this);
 	prdAni();
 	clearInterval(prdInterval);
 	prdInterval = setInterval(onPrdInterval, 4000);
 }
 
 function onPrdInterval(){
-	if(prdListIdx == prdLastIdx) prdListIdx = 0;
-	else prdListIdx++;
+$list = ($list.index()==$list.siblings().length) ? $list.siblings().eq(0) : $list.next();
+$pager = $list.parent().next().find(".pager").eq($list.index());
 	prdAni();
 }
 
@@ -172,9 +200,9 @@ $(".header-wrapper .navi-page").mouseleave(onPageLeave);
 
 
 $(".prd-stage").hover(onPrdOver, onPrdLeave);
-$(".prd-stage .pager").click(onPagerClick);
+$(".brand-wrapper .prd-stage").find(".pager").click(onPagerClick);
 
-$(".type-1 .btn-wish").click(onWishModalShow);
+$(".brand-wrapper .btn-wish").click(onWishModalShow);
 $(".modal-wrapper .btn-close, .modal-wrapper").click(onModalHide);
 $(".modal-wrap").click(function(e) { e.stopPropagation() });
 
@@ -242,3 +270,20 @@ function ani(){
 	var $nowSlide = $($($slides[idx]).clone()).appendTo($wrapper).css("background-image","url("+bg[idx]+")").stop().animate({"opacity":1},500, slideInit);
 }
  })();
+
+
+ /***** .info-wrapper*****/
+/*  $(".info-wrapper>.info-lt").mouseenter(onInfoLtOver);
+ $(".info-wrapper>.info-lt").mouseleave(onInfoLtleave);
+var Info
+ function onInfoLtOver(){
+	 $(this).find(".underline").eq(0).find("div").attr("style","");
+	 $(this).find(".underline").eq(1).find("div").attr("style","");
+$(this).find(".underline").eq(0).find("div").css({"animation-delay":"0s","animation-name":"underline"});
+$(this).find(".underline").eq(1).find("div").css({"animation-delay":"0.1s","animation-name":"underline"})
+ };
+ function onInfoLtleave(){
+
+	$(this).find(".underline").eq(1).find("div").css({"transform":"scaleX(1)","animation-delay":"0.1s","animation-name":"underline-rev"})
+	$(this).find(".underline").eq(0).find("div").css({"transform":"scaleX(1)","animation-delay":"0s","animation-name":"underline-rev"})
+ }; */

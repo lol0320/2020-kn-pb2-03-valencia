@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>parent(), find(), sibling(), prev(), next()</title>
+	<link rel="stylesheet" href="../css/bootstrap.min.css">
+	<style>
+.wrapper{
+	display: flex;
+justify-content: space-between;
+max-width: 800px;
+margin: 100px auto;}
+.prd-stage{
+	flex: 30% 0 0;
+border: 1px solid #000;
+height: 250px;
+position: relative;}
+.list{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	font-size: 50px;
+	background-color: bisque;
+}
+.pager-wrap{
+	position:absolute;
+	z-index: 2;
+	display: flex;
+	justify-content: center;
+bottom: 10px;
+width: 100%;
+}
+.pager{
+	font-size: 20px;
+	padding: 4px;
+	user-select: none;
+	cursor: pointer;
+}
+	</style>
+	<script src="../js/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+	<div class="wrapper">
+		<!-- .prd-stage*3>.lists>.list*3^.pager-wrap>.pager*3{i} -->  
+		<div class="prd-stage">
+			<div class="lists">
+				<div class="list">1</div>
+				<div class="list">2</div>
+				<div class="list">3</div>
+			</div>
+			<div class="pager-wrap">
+				<div class="pager">1</div>
+				<div class="pager">2</div>
+				<div class="pager">3</div>
+			</div>
+		</div>
+		<div class="prd-stage">
+			<div class="lists">
+				<div class="list">1</div>
+				<div class="list">2</div>
+				<div class="list">3</div>
+			</div>
+			<div class="pager-wrap">
+				<div class="pager">1</div>
+				<div class="pager">2</div>
+				<div class="pager">3</div>
+			</div>
+		</div>
+		<div class="prd-stage">
+			<div class="lists">
+				<div class="list">1</div>
+				<div class="list">2</div>
+				<div class="list">3</div>
+			</div>
+			<div class="pager-wrap">
+				<div class="pager">1</div>
+				<div class="pager">2</div>
+				<div class="pager">3</div>
+			</div>
+		</div>
+		
+		<script>
+			var list;
+			var pager;
+/* $(".lists").find(".list").eq(0).css("z-index",1); */
+
+//find(): 자손 , children():자식, parent():부모, parenrs(): 조상 ,next(),prev():형제들중에 바로위에있는애,siblings():형제 모두 
+$(".lists").each(function(i){
+	$(".lists").eq(i).find(".list").eq(0).css("z-index",1);
+
+});
+$(".pager").click(function(){
+
+	$pager = $(this);
+	$list = $(this).parent().prev().find(".list").eq($(this).index());
+/* 	var stageId = $(this).parent().parent().index();
+	 $(".prd-stage").eq(stageId).find(".list").css("z-index",0);
+	 $(".prd-stage").eq(stageId).find(".list").eq(id).css("z-index",1); */   /* 절대좌표 */
+
+	 $list.css("z-index",1).siblings().css("z-index",0);
+	 $pager.css("color","red").siblings().css("color","black");  //나를기준으로 상대좌표
+});
+
+		</script>
+</body>
+</html>
